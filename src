@@ -1,6 +1,7 @@
+template <typename T>
 class Vec {
 
-    int* m_Array;
+    T* m_Array;
     unsigned maxSize;
     unsigned currentSize = 0;
 
@@ -8,10 +9,10 @@ public:
     //The default constructor is called when the size of the array is not specified.
     // Default initial size: 15.
     Vec()
-        : m_Array(new int[15]), maxSize(15) {}
+        : m_Array(new T[15]), maxSize(15) {}
     // The argument constructor is called when initial size of the array has to be specified.
     Vec(int initial)
-        : m_Array(new int[initial]), maxSize(initial){}
+        : m_Array(new T[initial]), maxSize(initial){}
 
     // Destructor used to deallocate memory of m_Array if the class was declared on the heap. 
     // This prevents memory leaks.
@@ -30,7 +31,7 @@ public:
     // It's not adviced to write to indices using the [] operator, although it's possible.
     // (it might generate an out of bounds error if you aren't careful).
     // Instead, use the push method.
-    int& operator[](unsigned pos) const {
+    T& operator[](unsigned pos) const {
         if (!(pos <= maxSize - 1)) {
            throw std::out_of_range("Index out of bound");
         }
@@ -43,17 +44,17 @@ public:
     // Using push will write to the next available un-filled index.
     // You can't use push to write, for example, to the 50th element if only less than 49 elements are filled. 
     // To do that, you have to fill every index up to the 49th, to be able to fill the 50th index.
-    void push(int value) {
+    void push(T value) {
         if (currentSize >= maxSize) {
             maxSize *= 2;
-            int* m_tempArray = new int[maxSize];
+            T* m_tempArray = new T[maxSize];
             for (unsigned i = 0; i < maxSize; i++) {
                 m_tempArray[i] = m_Array[i];
             }
             //Deallocates memory taken up by m_Array
             delete[] m_Array;
             //Allocates new memory for the new size
-            m_Array = new int[maxSize];
+            m_Array = new T[maxSize];
             //Copies back the values
             for (unsigned i = 0; i < maxSize; i++) {
                 m_Array[i] = m_tempArray[i];
@@ -71,36 +72,32 @@ public:
 
     // Sorts array elements in ascending order
     void sortA() {
-        int min;
         unsigned index = 0;
         for (unsigned i = 0; i < currentSize - 1; i++) {
-            min = m_Array[i];
+            index = i;
             for (unsigned j = (i + 1); j < currentSize; j++) {
-                if (m_Array[j] <= min) {
-                    min = m_Array[j];
+                if (m_Array[j] <= m_Array[index]) {
                     index = j;
                 }
             }
-            int temp = m_Array[i];
-            m_Array[i] = min;
+            T temp = m_Array[i];
+            m_Array[i] = m_Array[index];
             m_Array[index] = temp;
         }
     }
 
     // Sorts array elements in descending order
     void sortD() {
-        int max;
         unsigned index = 0;
         for (unsigned i = 0; i < currentSize - 1; i++) {
-            max = m_Array[i];
+            index = i;
             for (unsigned j = (i + 1); j < currentSize; j++) {
-                if (m_Array[j] >= max) {
-                    max = m_Array[j];
+                if (m_Array[j] >= m_Array[index]) {
                     index = j;
                 }
             }
-            int temp = m_Array[i];
-            m_Array[i] = max;
+            T temp = m_Array[i];
+            m_Array[i] = m_Array[index];
             m_Array[index] = temp;
         }
     }
