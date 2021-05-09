@@ -14,7 +14,7 @@ public:
     Vec(int initial)
         : m_Array(new T[initial]), maxSize(initial){}
 
-    // Destructor used to deallocate memory of m_Array if the class was declared on the heap. 
+    // Destructor used to deallocate memory of m_Array when the object runs out of scope. 
     // This prevents memory leaks.
     ~Vec() { delete[] m_Array; }
 
